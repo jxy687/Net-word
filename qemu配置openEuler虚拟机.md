@@ -1,4 +1,7 @@
-
+### 端口登陆
+```
+ssh -p 12055 root@localhost
+```
 ### 更改系统时间，保证能连上网
 ```
 timedatectl set-time 08:52:52
@@ -106,3 +109,29 @@ SSH_AUTH_SOCK=/root/.cache/keyring-C2R8J3/ssh
 ```
 sudo dnf install dconf-editor
 ```
+### 通过桌面打不开命令行
+```
+sudo dnf install mate-terminal
+```
+### 发现还是
+
+<img width="981" height="499" alt="图片" src="https://github.com/user-attachments/assets/2ea39c10-333d-49dd-8d28-f643f53316dd" />
+
+通过
+
+```
+dnf provides "*/gio-launch-desktop"
+```
+
+发现在 glib2-devel 里面
+
+```
+dnf install glib2-devel
+```
+
+最终
+
+<img width="1853" height="1048" alt="图片" src="https://github.com/user-attachments/assets/58dc7d8e-3ded-401d-8bff-cc23cb0b4dd2" />
+
+
+
