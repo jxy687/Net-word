@@ -9,11 +9,19 @@ git clone https://github.com/mevdschee/2048.c.git
 
 - 使用 Eclipse 打开项目
 
+<img width="1853" height="645" alt="2026-02-23 20-33-11屏幕截图" src="https://github.com/user-attachments/assets/37ed4eb6-7cf5-4cf9-b465-f7709cbe5654" />
+<img width="891" height="729" alt="图片" src="https://github.com/user-attachments/assets/2582c7dc-535f-4b81-b988-53df3911f358" />
+
+
 ```
 cd 2048.c
 ```
 
 ### 创建虚拟环境到项目目录
+
+- RuyiSDK -> Venv -> new virtual environment
+<img width="1854" height="1048" alt="图片" src="https://github.com/user-attachments/assets/048f986a-d19e-438b-99f6-89d7d19f7c08" />
+
 
 - 创建虚拟环境
 
