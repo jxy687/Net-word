@@ -32,4 +32,8 @@ source ../gnu-plct-venv/bin/ruyi-activate
 # 使用 qemu 的 -L 指定 sysroot 路径
 ruyi-qemu -L ~/文档/Games/CppND-Capstone-Snake-Game/gnu-plct-venv/sysroot/ ./SnakeGame
 
+# 或者
+env LIBGL_ALWAYS_SOFTWARE=1 LD_DEBUG=libs ruyi-qemu -L ~/文档/Games/CppND-Capstone-Snake-Game/gnu-plct-venv/sysroot/ ./build/SnakeGame 2>&1 | tee ld_debug.log
+
+
 ```
