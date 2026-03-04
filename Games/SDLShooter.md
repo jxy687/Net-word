@@ -18,4 +18,12 @@ cd ..
 
 ./build/SDLShooter-Linux
 ```
+会显示驱动相关的错误
+```
+export SDL_AUDIODRIVER=dummy
+
+export LIBGL_ALWAYS_SOFTWARE=1
+
+./build/SDLShooter-Linux
+```
 
