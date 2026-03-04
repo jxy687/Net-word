@@ -75,7 +75,7 @@ cmake .. -DCMAKE_INSTALL_PREFIX=/usr \
 cd ~/Downloads/SDL_image/build
 rm -rf *
 
-# 显式关闭那些找不到的依赖，确保配置文件不再去搜它们
+# 显式关闭那些找不到的依赖，确保配置文件不再去搜它们 - 成功的
 cmake .. -DCMAKE_INSTALL_PREFIX=/usr \
          -DSDL2IMAGE_AVIF=OFF \
          -DSDL2IMAGE_TIF=OFF \
