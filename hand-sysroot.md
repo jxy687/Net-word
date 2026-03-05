@@ -295,4 +295,20 @@ cmake --install build
 chmod +x ./build_riscv.sh 
 ```
 
+### 更改cmake配置
+<img width="1328" height="312" alt="image" src="https://github.com/user-attachments/assets/14d6486a-af8b-4ce5-a079-494e859d6172" />
+
+```
+cd sysroot
+
+find usr/lib64/cmake -name "*.cmake" -exec sed -i 's|"/usr|"${CMAKE_SYSROOT}/usr|g' {} +
+
+find usr/lib/cmake -name "*.cmake" -exec sed -i 's|"/usr|"${CMAKE_SYSROOT}/usr|g' {} +
+```
+
+## 通过上面的方式，可以成功编译 snake 和 shooter
+
+
+
+
 
