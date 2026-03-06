@@ -307,6 +307,38 @@ find usr/lib/cmake -name "*.cmake" -exec sed -i 's|"/usr|"${CMAKE_SYSROOT}/usr|g
 ```
 
 ## 通过上面的方式，可以成功编译 snake 和 shooter
+### 
+1. 使用 strace 查看“临终遗言”
+
+请尝试将 -d lib 替换为 -d strace。这会打印出程序运行过程中的每一个系统调用。我们重点关注程序退出（exit_group）前的最后几行
+```
+env SDL_AUDIODRIVER=dummy LIBGL_ALWAYS_SOFTWARE=1 \
+    ruyi-qemu -d strace \
+    -L ~/RuyiSDKGames/CppND-Capstone-Snake-Game-Hand/gnu-plct-venv/sysroot/ \
+    -E LD_LIBRARY_PATH=/usr/lib64:/usr/lib \
+    ./build/SDLShooter-Linux-hand
+```
+```
+
+```
+### 继续填充 sysroot,注意路径名称
+```
+# 定义你的虚拟环境 sysroot 路径
+export MY_SYSROOT="$HOME/RuyiSDKGames/CppND-Capstone-Snake-Game-Hand/gnu-plct-venv/sysroot"
+export MY_SYSROOT="$HOME/RuyiSDKGames/SDLShooter-Hand-Witoe/gnu-plct-venv/sysroot"
+# 使用 dnf 直接安装到该目录
+sudo dnf --installroot=$MY_SYSROOT \
+    --forcearch=riscv64 \
+    --releasever=24.03 \
+    --repofrompath=oe-base,https://mirrors.huaweicloud.com/openeuler/openEuler-24.03-LTS/OS/riscv64/ \
+    --repofrompath=oe-everything,https://mirrors.huaweicloud.com/openeuler/openEuler-24.03-LTS/everything/riscv64/ \
+    --repofrompath=oe-epol,https://mirrors.huaweicloud.com/openeuler/openEuler-24.03-LTS/EPOL/main/riscv64/ \
+    --repofrompath=oe-update,https://mirrors.huaweicloud.com/openeuler/openEuler-24.03-LTS/update/riscv64/ \
+    --disablerepo=* --enablerepo=oe-base,oe-everything,oe-epol,oe-update \
+    --nogpgcheck \
+    --setopt=install_weak_deps=False \
+    install -y bash coreutils dnf openEuler-release SDL2-devel freetype-devel libpng-devel wavpack-devel mesa-dri-drivers mesa-libGL-devel libX11-devel zlib-devel openssl-devel libXext-devel libXcursor-devel libXinerama-devel libXi-devel
+```
 
 
 
