@@ -1,3 +1,5 @@
+参见：https://gemini.google.com/app/9b65965ef738e2d1?hl=zh-cn
+
 ```
 source ./gnu-plct-venv/bin/ruyi-activate
 
