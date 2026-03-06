@@ -308,9 +308,41 @@ cd ..
 
 env SDL_AUDIODRIVER=dummy LIBGL_ALWAYS_SOFTWARE=1 ruyi-qemu -L ~/RuyiSDKGames/SDLShooter-Hand/gnu-plct-venv/sysroot/ ./build/SDLShooter-Linux
 ```
+<img width="1859" height="75" alt="image" src="https://github.com/user-attachments/assets/ac91835e-1c9e-4ca7-80a1-2351bc426bf0" />
 
+如果你的程序（SDLShooter-Linux）是 64 位的，它可能会首选去 usr/lib64 目录下找库。由于报错的 sysroot 里库在 usr/lib，你可以手动创建一个软链接：
 
+```
+cd ~/RuyiSDKGames/SDLShooter-Hand/gnu-plct-venv/sysroot/usr/
+ln -s lib lib64
+```
+```
+# 进入库文件实际存在的目录
+cd ~/RuyiSDKGames/SDLShooter-Hand/gnu-plct-venv/sysroot/usr/lib/
 
+# 修改所有库文件的权限（添加执行权限，使其变绿）
+chmod +x *.so*
+
+# 检查一下是否变绿了
+ls -l libSDL2_image-2.0.so.0
+```
+其实还是显示找不到，只能：
+```
+# 进入 lib64 目录
+cd ~/RuyiSDKGames/SDLShooter-Hand/gnu-plct-venv/sysroot/usr/lib64/
+
+# -s 表示创建软链接，-f 表示如果已存在则覆盖
+ln -sf ../lib/libSDL2_image-2.0.so.0 .
+ln -sf ../lib/libSDL2_image-2.0.so.0.900.0 .
+
+# 批量创建 Mixer 的链接
+ln -sf ../lib/libSDL2_mixer-2.0.so.0 .
+ln -sf ../lib/libSDL2_mixer-2.0.so.0.900.0 .
+
+# 批量创建 TTF 的链接（预防下一步报错）
+ln -sf ../lib/libSDL2_ttf-2.0.so.0 .
+ln -sf ../lib/libSDL2_ttf-2.0.so.0.900.0 .
+```
 
 
 
