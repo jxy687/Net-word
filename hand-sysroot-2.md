@@ -295,6 +295,19 @@ cmake -DCMAKE_TOOLCHAIN_FILE=$HOME/RuyiSDKGames/SDLShooter-Hand/gnu-plct-venv/to
 ```
 <img width="1854" height="675" alt="image" src="https://github.com/user-attachments/assets/0433b3b6-c2ab-4a9d-8f5b-2a1fcecc3b29" />
 
+avif，tif改为OFF
+<img width="1804" height="351" alt="image" src="https://github.com/user-attachments/assets/97fd5355-2114-4846-a4db-81b65fbdc73f" />
+执行：
+```
+find usr/lib64/cmake/SDL2 -name "*.cmake" -exec sed -i 's|"/usr|"${CMAKE_SYSROOT}/usr|g' {} +
+```
+
+### 运行项目
+```
+cd ..
+
+env SDL_AUDIODRIVER=dummy LIBGL_ALWAYS_SOFTWARE=1 ruyi-qemu -L ~/RuyiSDKGames/SDLShooter-Hand/gnu-plct-venv/sysroot/ ./build/SDLShooter-Linux
+```
 
 
 
