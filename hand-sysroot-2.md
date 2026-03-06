@@ -286,6 +286,15 @@ cmake --install build
 -- - enabled:  stb bmp gif jpg lbm pcx png pnm qoi svg tga tif webp xcf xpm xv
 -- - disabled: imageio wic avif jxl
 ```
+### 编译项目
+```
+cmake -DCMAKE_TOOLCHAIN_FILE=$HOME/RuyiSDKGames/SDLShooter-Hand/gnu-plct-venv/toolchain.cmake \
+      -DCMAKE_SYSROOT=$HOME/RuyiSDKGames/SDLShooter-Hand/gnu-plct-venv/sysroot \
+      -DCMAKE_EXE_LINKER_FLAGS="-static-libstdc++ -static-libgcc" \
+      ..
+```
+<img width="1854" height="675" alt="image" src="https://github.com/user-attachments/assets/0433b3b6-c2ab-4a9d-8f5b-2a1fcecc3b29" />
+
 
 
 
