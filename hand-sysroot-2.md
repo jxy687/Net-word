@@ -84,6 +84,7 @@ cmake --build build -j$(nproc)
 cmake --install build
 ```
 错误
+<img width="1856" height="864" alt="image" src="https://github.com/user-attachments/assets/a191b406-57d8-4639-8857-ecc0f5781a57" />
 
 修改后的build_riscv.sh
 ```
