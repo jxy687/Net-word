@@ -126,6 +126,169 @@ cmake --build build -j$(nproc)
 # 执行安装 (安装到 SYSROOT/usr)
 cmake --install build
 ```
+错误（可能出现）
+<img width="1858" height="342" alt="image" src="https://github.com/user-attachments/assets/0b3d09ee-8d91-44dd-a8ba-e0b9c7568446" />
+原因：这次的错误 确实是权限问题，而且原因基本可以确定：之前用 sudo dnf 往 sysroot 里安装过包，导致 sysroot 里的文件属于 root 用户。
+解决办法,注意sysroot是软链接
+```
+sudo chown -R $USER:$USER ~/RuyiSDKGames/SDLShooter-Hand/gnu-plct-venv/sysroot
+
+sudo chown -R $USER:$USER ~/RuyiSDKGames/SDLShooter-Hand/gnu-plct-venv/sysroot.riscv64-plct-linux-gnu
+
+#还是不行，执行
+sudo chmod -R 775 ~/RuyiSDKGames/SDLShooter-Hand/gnu-plct-venv/sysroot
+
+sudo chmod -R 775 ~/RuyiSDKGames/SDLShooter-Hand/gnu-plct-venv/sysroot.riscv64-plct-linux-gnu
+```
+### SDL_mixer
+build_riscv.sh
+```
+#!/bin/bash
+
+# --- 1. 局部路径定义 ---
+VENV_PATH="$HOME/RuyiSDKGames/SDLShooter-Hand/gnu-plct-venv"
+SYSROOT="$VENV_PATH/sysroot"
+TOOLCHAIN_BIN="$VENV_PATH/bin"
+TOOLCHAIN_PREFIX="riscv64-plct-linux-gnu-"
+
+export SYSROOT="$VENV_PATH/sysroot"
+export QEMU_LD_PREFIX="$SYSROOT"
+
+# --- 2. 编译器绝对路径 ---
+CC_EXEC="$TOOLCHAIN_BIN/${TOOLCHAIN_PREFIX}gcc"
+CXX_EXEC="$TOOLCHAIN_BIN/${TOOLCHAIN_PREFIX}g++"
+
+# --- 3. 彻底清理并重新配置 ---
+# 必须先删除旧目录，确保 Parse error 不会残留在缓存中
+rm -rf build
+mkdir build
+
+# 关键：确保 -D 后面的参数紧凑，没有空格
+PKG_CONFIG_SYSROOT_DIR="$SYSROOT" \
+PKG_CONFIG_LIBDIR="$SYSROOT/usr/lib64/pkgconfig:$SYSROOT/usr/share/pkgconfig" \
+PKG_CONFIG_PATH="" \
+cmake -S . -B build \
+  -DCMAKE_SYSTEM_NAME=Linux \
+  -DCMAKE_SYSTEM_PROCESSOR=riscv64 \
+  -DCMAKE_C_COMPILER="$CC_EXEC" \
+  -DCMAKE_CXX_COMPILER="$CXX_EXEC" \
+  -DCMAKE_SYSROOT="$SYSROOT" \
+  -DCMAKE_FIND_ROOT_PATH="$SYSROOT" \
+  -DCMAKE_FIND_ROOT_PATH_MODE_PROGRAM=NEVER \
+  -DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=ONLY \
+  -DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY \
+  -DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=ONLY \
+  -DCMAKE_INSTALL_PREFIX="/usr" \
+  -DCMAKE_STAGING_PREFIX="$SYSROOT/usr" \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DSDL2_INCLUDE_DIR="$SYSROOT/usr/include/SDL2"
+
+# --- 4. 编译与安装 ---
+cmake --build build -j$(nproc)
+cmake --install build
+```
+### SDL_ttf
+build_riscv.sh
+```
+#!/bin/bash
+
+# --- 1. 局部路径定义 ---
+VENV_PATH="$HOME/RuyiSDKGames/SDLShooter-Hand/gnu-plct-venv"
+SYSROOT="$VENV_PATH/sysroot"
+TOOLCHAIN_BIN="$VENV_PATH/bin"
+TOOLCHAIN_PREFIX="riscv64-plct-linux-gnu-"
+
+export SYSROOT="$VENV_PATH/sysroot"
+export QEMU_LD_PREFIX="$SYSROOT"
+
+# --- 2. 编译器绝对路径 ---
+CC_EXEC="$TOOLCHAIN_BIN/${TOOLCHAIN_PREFIX}gcc"
+CXX_EXEC="$TOOLCHAIN_BIN/${TOOLCHAIN_PREFIX}g++"
+
+# --- 3. 彻底清理并重新配置 ---
+# 必须先删除旧目录，确保 Parse error 不会残留在缓存中
+rm -rf build
+mkdir build
+
+# 关键：确保 -D 后面的参数紧凑，没有空格
+PKG_CONFIG_SYSROOT_DIR="$SYSROOT" \
+PKG_CONFIG_LIBDIR="$SYSROOT/usr/lib64/pkgconfig:$SYSROOT/usr/share/pkgconfig" \
+PKG_CONFIG_PATH="" \
+cmake -S . -B build \
+  -DCMAKE_SYSTEM_NAME=Linux \
+  -DCMAKE_SYSTEM_PROCESSOR=riscv64 \
+  -DCMAKE_C_COMPILER="$CC_EXEC" \
+  -DCMAKE_CXX_COMPILER="$CXX_EXEC" \
+  -DCMAKE_SYSROOT="$SYSROOT" \
+  -DCMAKE_FIND_ROOT_PATH="$SYSROOT" \
+  -DCMAKE_FIND_ROOT_PATH_MODE_PROGRAM=NEVER \
+  -DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=ONLY \
+  -DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY \
+  -DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=ONLY \
+  -DCMAKE_INSTALL_PREFIX="/usr" \
+  -DCMAKE_STAGING_PREFIX="$SYSROOT/usr" \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DSDL2_INCLUDE_DIR="$SYSROOT/usr/include/SDL2"
+
+# --- 4. 编译与安装 ---
+cmake --build build -j$(nproc)
+cmake --install build
+```
+### SDL_image
+build_riscv.sh
+```
+#!/bin/bash
+
+# --- 1. 局部路径定义 ---
+VENV_PATH="$HOME/RuyiSDKGames/SDLShooter-Hand/gnu-plct-venv"
+SYSROOT="$VENV_PATH/sysroot"
+TOOLCHAIN_BIN="$VENV_PATH/bin"
+TOOLCHAIN_PREFIX="riscv64-plct-linux-gnu-"
+
+export SYSROOT="$VENV_PATH/sysroot"
+export QEMU_LD_PREFIX="$SYSROOT"
+
+# --- 2. 编译器绝对路径 ---
+CC_EXEC="$TOOLCHAIN_BIN/${TOOLCHAIN_PREFIX}gcc"
+CXX_EXEC="$TOOLCHAIN_BIN/${TOOLCHAIN_PREFIX}g++"
+
+# --- 3. 彻底清理并重新配置 ---
+# 必须先删除旧目录，确保 Parse error 不会残留在缓存中
+rm -rf build
+mkdir build
+
+# 关键：确保 -D 后面的参数紧凑，没有空格
+PKG_CONFIG_SYSROOT_DIR="$SYSROOT" \
+PKG_CONFIG_LIBDIR="$SYSROOT/usr/lib64/pkgconfig:$SYSROOT/usr/share/pkgconfig" \
+PKG_CONFIG_PATH="" \
+cmake -S . -B build \
+  -DCMAKE_SYSTEM_NAME=Linux \
+  -DCMAKE_SYSTEM_PROCESSOR=riscv64 \
+  -DCMAKE_C_COMPILER="$CC_EXEC" \
+  -DCMAKE_CXX_COMPILER="$CXX_EXEC" \
+  -DCMAKE_SYSROOT="$SYSROOT" \
+  -DCMAKE_FIND_ROOT_PATH="$SYSROOT" \
+  -DCMAKE_FIND_ROOT_PATH_MODE_PROGRAM=NEVER \
+  -DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=ONLY \
+  -DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY \
+  -DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=ONLY \
+  -DCMAKE_INSTALL_PREFIX="/usr" \
+  -DCMAKE_STAGING_PREFIX="$SYSROOT/usr" \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DSDL2_INCLUDE_DIR="$SYSROOT/usr/include/SDL2"
+
+# --- 4. 编译与安装 ---
+cmake --build build -j$(nproc)
+cmake --install build
+```
+注意输出：
+```
+-- - enabled:  stb bmp gif jpg lbm pcx png pnm qoi svg tga tif webp xcf xpm xv
+-- - disabled: imageio wic avif jxl
+```
+
+
+
 
 
 
